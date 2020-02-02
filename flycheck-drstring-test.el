@@ -63,7 +63,7 @@ func foo(bar: Int, baz: Int) -> Int
                        nil))))
 
 (ert-deftest flycheck-drstring--font-lock-error-wrong-explanation-test ()
-  (let* ((explanation "========== DrString E011 ===========
+  (let ((explanation "========== DrString E011 ===========
 
 No examples here."))
     (should (equal-including-properties
@@ -73,19 +73,19 @@ No examples here."))
 No examples here."))))
 
 (ert-deftest flycheck-drstring-parse-wrong-errors-test ()
-  (let* ((output "Invalid output.
+  (let ((output "Invalid output.
 "))
     (should (equal
              (flycheck-drstring-parse-errors output 'dummy-checker 'dummy-buffer)
              nil))))
 
 (ert-deftest flycheck-drstring-parse-errors-test ()
-  (let* ((single-file "/sample.swift:2:0: warning: 1 docstring problem regarding foo(a:)
+  (let ((single-file "/sample.swift:2:0: warning: 1 docstring problem regarding foo(a:)
 |E002| Missing docstring for a of type Int
 
 Found 1 problem in 1 file in 0s 2ms
 ")
-         (multiple-files "/string.swift:8:0: warning: 4 docstring problems regarding completelyDocumented(a:b:)
+        (multiple-files "/string.swift:8:0: warning: 4 docstring problems regarding completelyDocumented(a:b:)
 |E011| For a, Parameter is misspelled as parameter
 |E011| For b, Parameter is misspelled as parameter
 |E011| Throws is misspelled as throws
