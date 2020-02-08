@@ -11,8 +11,8 @@
 ;;; Commentary:
 
 ;; This package adds support for linting documentation in Swift files
-;; using DrString (https://github.com/dduan/DrString/).  Add something
-;; like the following to your init.el:
+;; using DrString (https://github.com/dduan/DrString/).  To configure
+;; this package, add the following lines to your initialization file:
 
 ;; (require 'flycheck-drstring)
 ;; (flycheck-drstring-setup)
