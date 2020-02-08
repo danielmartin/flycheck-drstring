@@ -1,4 +1,4 @@
-;;; flycheck-drstring.el --- Doc linting for Swift using DrString -*- lexical-binding:t -*-
+;;; flycheck-drstring.el --- Doc linting for Swift using DrString -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2020 Daniel Martín <mardani29@yahoo.es>
 ;;

@@ -1,4 +1,4 @@
-;;; flycheck-drstring-test.el --- Tests for `flycheck-drstring'            -*- lexical-binding: t; -*-
+;;; flycheck-drstring-test.el --- Tests for `flycheck-drstring' -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020  Daniel Martín
 
