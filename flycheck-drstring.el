@@ -47,12 +47,6 @@
   "Apply Swift font lock on the Swift code in EXPLANATION."
   (with-temp-buffer
     (insert explanation)
-    ;; I don't think this can happen, because this checker is declared
-    ;; to run in `swift-mode' `:modes' only. If, for some reason,
-    ;; `swift-mode' is not available, just return the explanation
-    ;; without any fontification.
-    (unless (boundp 'swift-mode)
-      (buffer-string))
     (delay-mode-hooks (swift-mode))
     (goto-char (point-min))
     ;; "Bad example" and "Good example" delimit the areas of Swift
