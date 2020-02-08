@@ -1,23 +1,24 @@
-;;; flycheck-drstring.el --- Doc linting for Swift using DrString. -*- lexical-binding:t -*-
+;;; flycheck-drstring.el --- Doc linting for Swift using DrString -*- lexical-binding:t -*-
 
 ;; Copyright (C) 2020 Daniel Martín <mardani29@yahoo.es>
 ;;
 ;; Author: Daniel Martín <mardani29@yahoo.es>
+;; URL: https://github.com/danielmartin/flycheck-drstring
 ;; Created: 1 February 2020
 ;; Version: 0.1
-;; Package-Requires: ((flycheck "0.25"))
+;; Package-Requires: ((emacs "25.1") (flycheck "0.25"))
 
 ;;; Commentary:
 
 ;; This package adds support for linting documentation in Swift files
-;; using DrString (https://github.com/dduan/DrString/). Add something
+;; using DrString (https://github.com/dduan/DrString/).  Add something
 ;; like the following to your init.el:
 
 ;; (require 'flycheck-drstring)
 ;; (flycheck-drstring-setup)
 
 ;; DrString is a CLI tool that can be installed using your favorite
-;; package manager. For example, if you use Homebrew:
+;; package manager.  For example, if you use Homebrew:
 ;; $ brew install dduan/formulae/drstring
 
 ;;; License:
@@ -41,6 +42,7 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Code:
+
 (require 'flycheck)
 
 (defun flycheck-drstring--font-lock-error-explanation (explanation)
@@ -90,17 +92,7 @@
 (defun flycheck-drstring-parse-errors (output checker buffer)
   "Parse errors from OUTPUT, given a Flycheck CHECKER, and a BUFFER.
 This function returns a list of `flycheck-error' structures or
-nil if no error could be parsed.
-
-Sample output from DrString:
-
-/sample.swift:4:0: warning: 2 docstring problems regarding redundantKeywords3(a:)
-|E011| For a, Parameter is misspelled as parameter
-|E013| Redundant documentation for returns
-
-/sample.swift:7:0: warning: 1 docstring problem regarding foo(a:)
-|E002| Missing docstring for a of type Int
-"
+nil if no error could be parsed."
   (with-temp-buffer
     (let ((current-file)                ; File that contains the error that is being parsed.
           (current-line)                ; Line number where the current error is.
@@ -155,7 +147,7 @@ Sample output from DrString:
 
 ;;;###autoload
 (defun flycheck-drstring-setup ()
-  "Convenience function that sets up Flycheck integration of DrString."
+  "Convenience function to set up Flycheck support for DrString."
   (add-to-list 'flycheck-checkers 'drstring))
 
 (provide 'flycheck-drstring)
