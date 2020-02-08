@@ -49,23 +49,33 @@
   "Apply Swift font lock on the Swift code in EXPLANATION."
   (with-temp-buffer
     (insert explanation)
-    (delay-mode-hooks (swift-mode))
-    (goto-char (point-min))
-    ;; "Bad example" and "Good example" delimit the areas of Swift
-    ;; sample code that we want to fontify.
-    (let ((bad-example-beginning
-           (re-search-forward "Bad example:\n------------------------------------" nil t))
-          (bad-example-end
-           (re-search-forward "------------------------------------" nil t))
-          (good-example-beginning
-           (re-search-forward "Good example:\n------------------------------------" nil t))
-          (good-example-end
-           (re-search-forward "------------------------------------" nil t)))
-      (when (and bad-example-beginning bad-example-end good-example-beginning good-example-end)
-        (with-no-warnings
-          (font-lock-fontify-region bad-example-beginning bad-example-end)
-          (font-lock-fontify-region good-example-beginning good-example-end)))
-      (buffer-string))))
+    (cond ((not (boundp 'swift-mode))
+           ;; Do not fontify if `swift-mode' is unavailable.
+           (buffer-string))
+          (t (delay-mode-hooks (swift-mode))
+             (goto-char (point-min))
+             ;; "Bad example" and "Good example" delimit the areas of Swift
+             ;; sample code that we want to fontify.
+             (let ((bad-example-beginning
+                    (re-search-forward "Bad example:\n------------------------------------"
+                                       nil t))
+                   (bad-example-end
+                    (re-search-forward "------------------------------------"
+                                       nil t))
+                   (good-example-beginning
+                    (re-search-forward "Good example:\n------------------------------------"
+                                       nil t))
+                   (good-example-end
+                    (re-search-forward "------------------------------------"
+                                       nil t)))
+               (when (and bad-example-beginning
+                          bad-example-end
+                          good-example-beginning
+                          good-example-end)
+                 (with-no-warnings
+                   (font-lock-fontify-region bad-example-beginning bad-example-end)
+                   (font-lock-fontify-region good-example-beginning good-example-end)))
+               (buffer-string))))))
 
 (defun flycheck-drstring--insert-error-explanation (error-id)
   "Insert an explanation for DrString's ERROR-ID in `flycheck-explain-error-buffer'."
