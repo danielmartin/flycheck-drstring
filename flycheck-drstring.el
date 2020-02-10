@@ -91,14 +91,13 @@
 
 (defun flycheck-drstring-error-explainer (error)
   "Explain a DrString ERROR."
-  (if-let ((error-id (flycheck-error-id error))
-           (loading-msg "Loading..."))
-      (progn
-          ;; We need to load the explanation in the next event loop
-          ;; because otherwise `flycheck' will delete our font-lock
-          ;; text properties when creating the Help buffer.
-          (run-at-time 0 nil #'flycheck-drstring--insert-error-explanation error-id)
-          loading-msg)))
+  (when-let ((error-id (flycheck-error-id error))
+             (loading-msg "Loading..."))
+    ;; We need to load the explanation in the next event loop
+    ;; because otherwise `flycheck' will delete our font-lock
+    ;; text properties when creating the Help buffer.
+    (run-at-time 0 nil #'flycheck-drstring--insert-error-explanation error-id)
+    loading-msg))
 
 (defun flycheck-drstring-parse-errors (output checker buffer)
   "Parse errors from OUTPUT, given a Flycheck CHECKER, and a BUFFER.
