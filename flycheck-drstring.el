@@ -1,26 +1,13 @@
 ;;; flycheck-drstring.el --- Doc linting for Swift using DrString -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2020 Daniel Martín <mardani29@yahoo.es>
-;;
+
 ;; Author: Daniel Martín <mardani29@yahoo.es>
 ;; URL: https://github.com/danielmartin/flycheck-drstring
 ;; Created: 1 February 2020
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "25.1") (flycheck "0.25"))
 ;; Keywords: tools flycheck
-
-;;; Commentary:
-
-;; This package adds support for linting documentation in Swift files
-;; using DrString (https://github.com/dduan/DrString/).  To configure
-;; this package, add the following line to your initialization file:
-
-;; (flycheck-drstring-setup)
-
-;; DrString is a CLI tool that can be installed using your favorite
-;; package manager.  For example, if you use Homebrew:
-
-;; $ brew install dduan/formulae/drstring
 
 ;;; License:
 
@@ -41,6 +28,19 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
+
+;;; Commentary:
+
+;; This package adds support for linting documentation in Swift files
+;; using DrString (https://github.com/dduan/DrString/).  To configure
+;; this package, add the following line to your initialization file:
+
+;; (flycheck-drstring-setup)
+
+;; DrString is a CLI tool that can be installed using your favorite
+;; package manager.  For example, if you use Homebrew:
+
+;; $ brew install dduan/formulae/drstring
 
 ;;; Code:
 
