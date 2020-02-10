@@ -7,6 +7,7 @@
 ;; Created: 1 February 2020
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "25.1") (flycheck "0.25"))
+;; Keywords: tools flycheck
 
 ;;; Commentary:
 
