@@ -1,25 +1,13 @@
 ;;; flycheck-drstring.el --- Doc linting for Swift using DrString -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2020 Daniel Martín <mardani29@yahoo.es>
-;;
+
 ;; Author: Daniel Martín <mardani29@yahoo.es>
 ;; URL: https://github.com/danielmartin/flycheck-drstring
 ;; Created: 1 February 2020
 ;; Version: 0.1
-;; Package-Requires: ((emacs "25.1") (flycheck "0.25"))
-
-;;; Commentary:
-
-;; This package adds support for linting documentation in Swift files
-;; using DrString (https://github.com/dduan/DrString/).  To configure
-;; this package, add the following line to your initialization file:
-
-;; (flycheck-drstring-setup)
-
-;; DrString is a CLI tool that can be installed using your favorite
-;; package manager.  For example, if you use Homebrew:
-
-;; $ brew install dduan/formulae/drstring
+;; Package-Requires: ((emacs "25.1") (flycheck "0.25") (swift-mode "8.0"))
+;; Keywords: tools flycheck
 
 ;;; License:
 
@@ -41,9 +29,23 @@
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
+;;; Commentary:
+
+;; This package adds support for linting documentation in Swift files
+;; using DrString (https://github.com/dduan/DrString/).  To configure
+;; this package, add the following line to your initialization file:
+
+;; (flycheck-drstring-setup)
+
+;; DrString is a CLI tool that can be installed using your favorite
+;; package manager.  For example, if you use Homebrew:
+
+;; $ brew install dduan/formulae/drstring
+
 ;;; Code:
 
 (require 'flycheck)
+(require 'swift-mode)
 
 (defun flycheck-drstring--font-lock-error-explanation (explanation)
   "Apply Swift font lock on the Swift code in EXPLANATION."
@@ -90,14 +92,13 @@
 
 (defun flycheck-drstring-error-explainer (error)
   "Explain a DrString ERROR."
-  (if-let ((error-id (flycheck-error-id error))
-           (loading-msg "Loading..."))
-      (progn
-          ;; We need to load the explanation in the next event loop
-          ;; because otherwise `flycheck' will delete our font-lock
-          ;; text properties when creating the Help buffer.
-          (run-at-time 0 nil #'flycheck-drstring--insert-error-explanation error-id)
-          loading-msg)))
+  (when-let ((error-id (flycheck-error-id error))
+             (loading-msg "Loading..."))
+    ;; We need to load the explanation in the next event loop
+    ;; because otherwise `flycheck' will delete our font-lock
+    ;; text properties when creating the Help buffer.
+    (run-at-time 0 nil #'flycheck-drstring--insert-error-explanation error-id)
+    loading-msg))
 
 (defun flycheck-drstring-parse-errors (output checker buffer)
   "Parse errors from OUTPUT, given a Flycheck CHECKER, and a BUFFER.
@@ -118,31 +119,31 @@ nil if no error could be parsed."
       (insert output)
       (goto-char (point-min))
       (while (not (eobp))
-          (cond ((looking-at error-header)
-                 (let ((filename (match-string 1))
-                       (line (match-string 2))
-                       (column (match-string 3)))
-                   (setq current-file filename)
-                   (setq current-line line)
-                   (setq current-column column)
-                   (forward-line)))
-                ((looking-at error-description)
-                 (let ((error-id (match-string 1))
-                       (message (match-string 2)))
-                   (push (flycheck-error-new-at
-                          (flycheck-string-to-number-safe current-line)
-                          (flycheck-string-to-number-safe current-column)
-                          'warning
-                          (unless (string-empty-p message) message)
-                          :id (unless (string-empty-p error-id) error-id)
-                          :checker checker
-                          :buffer buffer
-                          :filename (if (or (null current-file) (string-empty-p current-file))
-                                        (buffer-file-name)
-                                      current-file))
-                         errors)
-                   (forward-line)))
-                (t (forward-line))))
+        (cond ((looking-at error-header)
+               (let ((filename (match-string 1))
+                     (line (match-string 2))
+                     (column (match-string 3)))
+                 (setq current-file filename)
+                 (setq current-line line)
+                 (setq current-column column)
+                 (forward-line)))
+              ((looking-at error-description)
+               (let ((error-id (match-string 1))
+                     (message (match-string 2)))
+                 (push (flycheck-error-new-at
+                        (flycheck-string-to-number-safe current-line)
+                        (flycheck-string-to-number-safe current-column)
+                        'warning
+                        (unless (string-empty-p message) message)
+                        :id (unless (string-empty-p error-id) error-id)
+                        :checker checker
+                        :buffer buffer
+                        :filename (if (or (null current-file) (string-empty-p current-file))
+                                      (buffer-file-name)
+                                    current-file))
+                       errors)
+                 (forward-line)))
+              (t (forward-line))))
       (nreverse errors))))
 
 (flycheck-define-checker drstring
