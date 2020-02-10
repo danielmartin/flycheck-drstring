@@ -118,31 +118,31 @@ nil if no error could be parsed."
       (insert output)
       (goto-char (point-min))
       (while (not (eobp))
-          (cond ((looking-at error-header)
-                 (let ((filename (match-string 1))
-                       (line (match-string 2))
-                       (column (match-string 3)))
-                   (setq current-file filename)
-                   (setq current-line line)
-                   (setq current-column column)
-                   (forward-line)))
-                ((looking-at error-description)
-                 (let ((error-id (match-string 1))
-                       (message (match-string 2)))
-                   (push (flycheck-error-new-at
-                          (flycheck-string-to-number-safe current-line)
-                          (flycheck-string-to-number-safe current-column)
-                          'warning
-                          (unless (string-empty-p message) message)
-                          :id (unless (string-empty-p error-id) error-id)
-                          :checker checker
-                          :buffer buffer
-                          :filename (if (or (null current-file) (string-empty-p current-file))
-                                        (buffer-file-name)
-                                      current-file))
-                         errors)
-                   (forward-line)))
-                (t (forward-line))))
+        (cond ((looking-at error-header)
+               (let ((filename (match-string 1))
+                     (line (match-string 2))
+                     (column (match-string 3)))
+                 (setq current-file filename)
+                 (setq current-line line)
+                 (setq current-column column)
+                 (forward-line)))
+              ((looking-at error-description)
+               (let ((error-id (match-string 1))
+                     (message (match-string 2)))
+                 (push (flycheck-error-new-at
+                        (flycheck-string-to-number-safe current-line)
+                        (flycheck-string-to-number-safe current-column)
+                        'warning
+                        (unless (string-empty-p message) message)
+                        :id (unless (string-empty-p error-id) error-id)
+                        :checker checker
+                        :buffer buffer
+                        :filename (if (or (null current-file) (string-empty-p current-file))
+                                      (buffer-file-name)
+                                    current-file))
+                       errors)
+                 (forward-line)))
+              (t (forward-line))))
       (nreverse errors))))
 
 (flycheck-define-checker drstring
