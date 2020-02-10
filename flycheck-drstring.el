@@ -6,7 +6,7 @@
 ;; URL: https://github.com/danielmartin/flycheck-drstring
 ;; Created: 1 February 2020
 ;; Version: 0.1
-;; Package-Requires: ((emacs "25.1") (flycheck "0.25"))
+;; Package-Requires: ((emacs "25.1") (flycheck "0.25") (swift-mode "8.0"))
 ;; Keywords: tools flycheck
 
 ;;; License:
@@ -45,6 +45,7 @@
 ;;; Code:
 
 (require 'flycheck)
+(require 'swift-mode)
 
 (defun flycheck-drstring--font-lock-error-explanation (explanation)
   "Apply Swift font lock on the Swift code in EXPLANATION."
